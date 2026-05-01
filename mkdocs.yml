@@ -1,0 +1,10 @@
+site_name: Study Notes
+theme:
+  name: material
+  language: ja
+  features:
+    - navigation.tabs
+    - navigation.top
+    - search.suggest
+nav:
+  - Home: index.md
