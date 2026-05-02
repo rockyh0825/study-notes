@@ -106,6 +106,12 @@ create table tasks (
 
 **Vite + React + TypeScript + Tailwind CSS v4** の構成。react-swipeable でスワイプジェスチャーを実装し、vite-plugin-pwa で PWA 化した。
 
+### 音声入力画面
+
+FAB のマイクボタンをタップすると音声入力画面に遷移する。Web Speech API でリアルタイムに文字起こしされ、句読点なしで流れ込んできたテキストをそのまま Claude に渡す。
+
+<img src="images/voice-input.jpg" width="300" alt="音声入力画面">
+
 ### ドラフト確認のスワイプカード
 
 音声メモから抽出されたタスクは `draft` 状態で溜まる。アプリ起動時に draft があれば確認画面を先出しして、1件ずつカード形式でレビューさせる設計にした。
@@ -113,6 +119,8 @@ create table tasks (
 - **右スワイプ** → `PATCH status: todo`（タスクとして追加）
 - **左スワイプ** → `DELETE`（捨てる）
 - スワイプ量に応じて緑/赤のオーバーレイが透けて見える視覚フィードバック付き
+
+<img src="images/swipe-draft.png" width="300" alt="スワイプでdraft承認">
 
 ### PWA の iOS 対応
 
