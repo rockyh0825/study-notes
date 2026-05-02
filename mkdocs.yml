@@ -8,3 +8,5 @@ theme:
     - search.suggest
 nav:
   - Home: index.md
+  - Dev:
+    - 音声メモ → タスク管理 PWA: dev/voice-memo-pwa.md
