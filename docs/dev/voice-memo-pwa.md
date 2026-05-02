@@ -110,7 +110,7 @@ create table tasks (
 
 FAB のマイクボタンをタップすると音声入力画面に遷移する。Web Speech API でリアルタイムに文字起こしされ、句読点なしで流れ込んできたテキストをそのまま Claude に渡す。
 
-<img src="images/voice-input.jpg" width="300" alt="音声入力画面">
+![音声入力画面](images/voice-input.jpg){ width="300" }
 
 ### ドラフト確認のスワイプカード
 
@@ -120,7 +120,7 @@ FAB のマイクボタンをタップすると音声入力画面に遷移する�
 - **左スワイプ** → `DELETE`（捨てる）
 - スワイプ量に応じて緑/赤のオーバーレイが透けて見える視覚フィードバック付き
 
-<img src="images/swipe-draft.png" width="300" alt="スワイプでdraft承認">
+![スワイプでdraft承認](images/swipe-draft.png){ width="300" }
 
 ### PWA の iOS 対応
 
