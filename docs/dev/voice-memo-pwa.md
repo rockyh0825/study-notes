@@ -4,6 +4,16 @@
 
 ---
 
+## 作った背景
+
+iPhone 17 に買い替えたことで **アクションボタン** が使えるようになった。「家でふと思ったことをアクションボタン長押しで音声入力してタスクに残せたら便利」と考え、まず Todoist の音声入力機能（Ramble）を試してみた。
+
+しかし、**無料プランでは月 10 回までしか使えない**制限がある。Pro プランにすれば無制限になるが、料金は **月払い $7/月、年払いでも $5/月（年額 $60）**（2025年12月の値上げ後）。音声入力のためだけにこれを払うのは割高に感じた。
+
+そもそも音声メモをそこまで高頻度で使うかというと、そうでもない。それなら **自分で作ってしまえばいい** という発想に至った。
+
+---
+
 ## システム構成
 
 ```mermaid
@@ -96,30 +106,6 @@ create table tasks (
 
 **Vite + React + TypeScript + Tailwind CSS v4** の構成。react-swipeable でスワイプジェスチャーを実装し、vite-plugin-pwa で PWA 化した。
 
-### 画面フロー
-
-```mermaid
-flowchart TD
-    A[アプリ起動] --> B{draft タスクあり？}
-    B -->|あり| C[ドラフト確認画面]
-    B -->|なし| D[タスク一覧画面]
-
-    C -->|右スワイプ / 承認ボタン| E[status: todo に変更]
-    C -->|左スワイプ / 削除ボタン| F[DELETE]
-    C -->|編集ボタン| G[編集モーダル]
-    C -->|全件処理| D
-
-    D -->|🎤 FAB タップ| H[音声入力画面]
-    D -->|タスクをタップ| G
-    D -->|左スワイプ| F
-
-    H -->|マイク録音| I[Web Speech API で文字起こし]
-    H -->|テキスト入力| J[テキストエリア]
-    I --> K[POST /extract-tasks]
-    J --> K
-    K --> C
-```
-
 ### ドラフト確認のスワイプカード
 
 音声メモから抽出されたタスクは `draft` 状態で溜まる。アプリ起動時に draft があれば確認画面を先出しして、1件ずつカード形式でレビューさせる設計にした。
@@ -141,41 +127,6 @@ Safari から「ホーム画面に追加」するだけでネイティブアプ�
 ```
 
 `viewport-fit=cover` + `env(safe-area-inset-*)` で Dynamic Island / ノッチ対応も入れた。
-
----
-
-## デプロイ構成
-
-```mermaid
-graph LR
-    subgraph ローカル開発
-        Dev[localhost:5173] -->|VITE_API_TOKEN| Local[localhost:8000]
-    end
-
-    subgraph 本番
-        Browser[voice-memo-frontend<br/>.pages.dev] -->|トークンなし| W[Cloudflare Worker]
-        W -->|Bearer Token<br/>サーバーサイドで付与| T[Cloudflare Tunnel]
-        T --> Prod[自宅 FastAPI]
-    end
-
-    subgraph iPhoneショートカット
-        SC[Shortcuts] -->|Bearer Token| T
-    end
-```
-
-### 自宅サーバー公開: Cloudflare Tunnel
-
-ルーターのポート開放・固定 IP なしで自宅サーバーを HTTPS 公開できる。`cloudflared` をインストールして systemd サービスとして登録するだけ。
-
-```bash
-cloudflared tunnel create voice-memo-api
-cloudflared tunnel route dns voice-memo-api api.yourdomain.com
-cloudflared service install
-```
-
-### フロントエンド: Cloudflare Pages
-
-GitHub リポジトリと連携して、`main` ブランチへの push で自動ビルド＆デプロイ。ビルド設定は `npm run build` / 出力先 `dist` だけ。
 
 ---
 
@@ -247,6 +198,14 @@ Cloudflare Worker が軽量な BFF として機能する。認証情報の隠蔽
 **PWA と通知**
 
 iOS の PWA は Web Push 通知が制限されていて、ネイティブアプリのような通知体験は難しい。今回はひとまず通知なしで割り切り、Shortcuts でのメモ作成フローに集中した。
+
+---
+
+## 今後の展望
+
+必要最低限の機能は実装できたので、いったんここで一区切り。時間ができたら **サブタスク対応** を実装したい。
+
+Todoist の音声入力（Ramble）ではサブタスクを追加できない。例えば「買い物する」というタスクの中に、「卵」「牛乳」「野菜」といった買う物をサブタスクとして紐づけるようなことができない。音声メモのテキストから Claude がタスクを抽出するこの仕組みなら、階層構造を解釈してサブタスクまで生成することができるはず。実現できれば機能面でも Todoist 無料プランを超えられる。
 
 ---
 
