@@ -17,5 +17,8 @@ markdown_extensions:
           format: !!python/name:pymdownx.superfences.fence_code_format
 nav:
   - Home: index.md
-  - Dev:
-    - 音声メモ → タスク管理 PWA: dev/voice-memo-pwa.md
+  - Article:
+    - 音声メモ → タスク管理 PWA: article/voice-memo-pwa.md
+    - GitHub Actions 自動デプロイ: article/github-actions-self-hosted-deploy.md
+  - CI/CD:
+    - GitHub Actions と CI/CD の基礎: cicd/github-actions-basics.md
