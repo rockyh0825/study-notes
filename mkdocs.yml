@@ -20,5 +20,6 @@ nav:
   - Article:
     - 音声メモ → タスク管理 PWA: article/voice-memo-pwa.md
     - GitHub Actions 自動デプロイ: article/github-actions-self-hosted-deploy.md
+    - cherry-pick したコミットによる conflict を rebase で解決する: article/git-cherry-pick-rebase.md
   - CI/CD:
     - GitHub Actions と CI/CD の基礎: cicd/github-actions-basics.md
