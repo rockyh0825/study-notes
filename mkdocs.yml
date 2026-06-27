@@ -10,6 +10,8 @@ theme:
 markdown_extensions:
   - attr_list
   - md_in_html
+  - admonition
+  - pymdownx.details
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
@@ -22,5 +24,29 @@ nav:
     - PWA に Supabase Auth でログイン機能を追加した: article/supabase-auth-pwa.md
     - GitHub Actions 自動デプロイ: article/github-actions-self-hosted-deploy.md
     - cherry-pick したコミットによる conflict を rebase で解決する: article/git-cherry-pick-rebase.md
+  - Git:
+    - push済みファイルをPRから除外する: git/remove-tracked-files.md
   - CI/CD:
     - GitHub Actions と CI/CD の基礎: cicd/github-actions-basics.md
+  - Kotlin:
+    - data class: kotlin/data-class.md
+    - null 安全: kotlin/null-safety.md
+  - Spring Boot:
+    - MyBatis Mapper の書き方: spring-boot/mybatis-mapper.md
+  - Architecture:
+    - Package by Feature 構成: architecture/package-by-feature.md
+    - Capability パターン: architecture/capability-pattern.md
+  - Cleaning App:
+    - アーキテクチャ決定ログ: cleaning-app/architecture-decisions.md
+    - 開発ログ: cleaning-app/dev-log.md
+  - Quiz:
+    - Kotlin:
+      - data class: quiz/kotlin/data-class.md
+      - null 安全: quiz/kotlin/null-safety.md
+    - Spring Boot:
+      - MyBatis Mapper の書き方: quiz/spring-boot/mybatis-mapper.md
+    - Architecture:
+      - Package by Feature 構成: quiz/architecture/package-by-feature.md
+      - Capability パターン: quiz/architecture/capability-pattern.md
+    - Cleaning App:
+      - アーキテクチャ決定: quiz/cleaning-app/architecture-decisions.md
