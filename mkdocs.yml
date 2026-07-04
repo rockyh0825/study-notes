@@ -45,6 +45,11 @@ nav:
       - Cleaning App: cleaning-app/index.md
       - アーキテクチャ決定ログ: cleaning-app/architecture-decisions.md
       - 開発ログ: cleaning-app/dev-log.md
+  - RSS Watch:
+      - RSS Watch: rss-watch/index.md
+      - システム設計: rss-watch/system-design.md
+      - アーキテクチャ決定ログ: rss-watch/architecture-decisions.md
+      - 開発ログ: rss-watch/dev-log.md
   - Quiz:
       - Quiz: quiz/index.md
       - Kotlin:
