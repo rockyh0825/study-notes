@@ -26,6 +26,7 @@ nav:
       - PWA に Supabase Auth でログイン機能を追加した: article/supabase-auth-pwa.md
       - GitHub Actions 自動デプロイ: article/github-actions-self-hosted-deploy.md
       - cherry-pick したコミットによる conflict を rebase で解決する: article/git-cherry-pick-rebase.md
+      - Kafka + SSE でブラウザにリアルタイム配信する: article/kafka-sse-realtime-streaming.md
   - Git:
       - push済みファイルをPRから除外する: git/remove-tracked-files.md
   - CI/CD:
