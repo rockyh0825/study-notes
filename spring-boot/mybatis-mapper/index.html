@@ -1,0 +1,2835 @@
+
+<!doctype html>
+<html lang="ja" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../../architecture/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>MyBatis Mapper の書き方 - Study Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#mybatis-mapper" class="md-skip">
+          コンテンツにスキップ
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="ヘッダー">
+    <a href="../.." title="Study Notes" class="md-header__button md-logo" aria-label="Study Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Study Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              MyBatis Mapper の書き方
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="検索" placeholder="検索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="検索">
+        
+        <button type="reset" class="md-search__icon md-icon" title="クリア" aria-label="クリア" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            検索を初期化
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="タブ" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../article/voice-memo-pwa/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Article
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../git/remove-tracked-files/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Git
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../cicd/github-actions-basics/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  CI/CD
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../kotlin/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Kotlin
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Spring Boot
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../cleaning-app/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Cleaning App
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../rss-watch/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  RSS Watch
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../quiz/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Quiz
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="ナビゲーション" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Study Notes" class="md-nav__button md-logo" aria-label="Study Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Study Notes
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Article
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Article
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../article/voice-memo-pwa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    音声メモ → タスク管理 PWA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../article/supabase-auth-pwa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PWA に Supabase Auth でログイン機能を追加した
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../article/github-actions-self-hosted-deploy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub Actions 自動デプロイ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../article/git-cherry-pick-rebase/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    cherry-pick したコミットによる conflict を rebase で解決する
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../article/kafka-sse-realtime-streaming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kafka + SSE でブラウザにリアルタイム配信する
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../article/micrometer-prometheus-grafana/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Micrometer + Prometheus + Grafana でアプリの性能を見える化する
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Git
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Git
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../git/remove-tracked-files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    push済みファイルをPRから除外する
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CI/CD
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    CI/CD
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cicd/github-actions-basics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GitHub Actions と CI/CD の基礎
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../kotlin/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kotlin
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Kotlin
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kotlin/data-class/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    data class
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kotlin/null-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    null 安全
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Boot
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Spring Boot
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MyBatis Mapper の書き方
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MyBatis Mapper の書き方
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目次">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目次
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mapper" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mapper インターフェース
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mapper インターフェース">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#param" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        引数のバインド（@Param の使いどころ）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        戻り値の型
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xml-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        XML vs アノテーション
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="XML vs アノテーション">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        アノテーション方式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        XML マッパー方式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#namespace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        namespace とインターフェースの対応
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resultmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resultMap
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="resultMap">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#snake_case-camelcase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        カラム名 ↔ プロパティ名のマッピング（snake_case ↔ camelCase）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#valsetter-data-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        val（setter なし）の data class へマッピングする
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#association-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ネストした関連（association / collection）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        動的SQL
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="動的SQL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#if-where" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        &lt;if&gt; / &lt;where&gt;
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#foreach-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        &lt;foreach&gt; で IN 句を組み立てる
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sql_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        アノテーション方式の動的 SQL
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jpa-flyway" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JPA との違い（Flyway が必須になる理由）
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../architecture/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/package-by-feature/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Package by Feature 構成
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/capability-pattern/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capability パターン
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../cleaning-app/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cleaning App
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cleaning App
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cleaning-app/architecture-decisions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    アーキテクチャ決定ログ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cleaning-app/dev-log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    開発ログ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../rss-watch/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RSS Watch
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    RSS Watch
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rss-watch/system-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    システム設計
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rss-watch/architecture-decisions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    アーキテクチャ決定ログ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rss-watch/dev-log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    開発ログ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../quiz/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quiz
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10" id="__nav_10_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Quiz
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../quiz/kotlin/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kotlin
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10_2" id="__nav_10_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Kotlin
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quiz/kotlin/data-class/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    data class
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quiz/kotlin/null-safety/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    null 安全
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../quiz/spring-boot/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spring Boot
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10_3" id="__nav_10_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Spring Boot
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quiz/spring-boot/mybatis-mapper/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MyBatis Mapper の書き方
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../quiz/architecture/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10_4" id="__nav_10_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quiz/architecture/package-by-feature/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Package by Feature 構成
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quiz/architecture/capability-pattern/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capability パターン
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../quiz/cleaning-app/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cleaning App
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_10_5" id="__nav_10_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cleaning App
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quiz/cleaning-app/architecture-decisions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    アーキテクチャ決定
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目次">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目次
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mapper" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mapper インターフェース
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mapper インターフェース">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#param" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        引数のバインド（@Param の使いどころ）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        戻り値の型
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xml-vs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        XML vs アノテーション
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="XML vs アノテーション">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        アノテーション方式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        XML マッパー方式
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#namespace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        namespace とインターフェースの対応
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resultmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resultMap
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="resultMap">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#snake_case-camelcase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        カラム名 ↔ プロパティ名のマッピング（snake_case ↔ camelCase）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#valsetter-data-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        val（setter なし）の data class へマッピングする
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#association-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ネストした関連（association / collection）
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        動的SQL
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="動的SQL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#if-where" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        &lt;if&gt; / &lt;where&gt;
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#foreach-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        &lt;foreach&gt; で IN 句を組み立てる
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sql_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        アノテーション方式の動的 SQL
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#jpa-flyway" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JPA との違い（Flyway が必須になる理由）
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="mybatis-mapper">MyBatis Mapper の書き方</h1>
+<p>Spring Boot + MyBatis での Mapper の書き方（インターフェース・XML/アノテーション・resultMap・動的SQL）をまとめる。</p>
+<hr />
+<h2 id="mapper">Mapper インターフェース</h2>
+<p>MyBatis では、<code>@Mapper</code> を付けた<strong>インターフェース</strong>が SQL 実行の入口になる。実装は自分で書かず、<code>mybatis-spring-boot-starter</code> が実行時に自動生成して Spring の Bean として登録してくれる。</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@Mapper</span>
+<span class="kd">interface</span><span class="w"> </span><span class="nc">RoomMapper</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">fun</span><span class="w"> </span><span class="nf">insert</span><span class="p">(</span><span class="n">room</span><span class="p">:</span><span class="w"> </span><span class="n">Room</span><span class="p">)</span>
+
+<span class="w">    </span><span class="kd">fun</span><span class="w"> </span><span class="nf">selectByUserId</span><span class="p">(</span>
+<span class="w">        </span><span class="nd">@Param</span><span class="p">(</span><span class="s">&quot;userId&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">userId</span><span class="p">:</span><span class="w"> </span><span class="n">UUID</span><span class="p">,</span>
+<span class="w">    </span><span class="p">):</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Room</span><span class="o">&gt;</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>メソッド 1 つが SQL 1 つに対応する。どの SQL かは、メソッド名（<code>id</code>）で XML（またはアノテーション）と結びつく。</li>
+<li>インターフェースを定義するだけで、<code>@Autowired</code> / コンストラクタ注入で使える。</li>
+</ul>
+<h3 id="param">引数のバインド（<code>@Param</code> の使いどころ）</h3>
+<p>SQL 側からは <code>#{名前}</code> でメソッド引数を参照する。</p>
+<ul>
+<li><strong>引数が 1 つでオブジェクト</strong>（例: <code>Room</code>）なら、SQL から <code>#{name}</code> <code>#{gridX}</code> のようにそのプロパティを直接参照できる。<code>@Param</code> は不要。</li>
+<li><strong>引数が複数、または単純型 1 つ</strong>のときは、どの引数を指すか名前で区別するために <code>@Param("userId")</code> を付ける。SQL からは <code>#{userId}</code> で参照する。</li>
+</ul>
+<h3 id="_1">戻り値の型</h3>
+<table>
+<thead>
+<tr>
+<th>取得結果</th>
+<th>戻り値の型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 行（見つからなければ null）</td>
+<td><code>Room?</code></td>
+</tr>
+<tr>
+<td>複数行</td>
+<td><code>List&lt;Room&gt;</code></td>
+</tr>
+<tr>
+<td>件数など</td>
+<td><code>Int</code> / <code>Long</code></td>
+</tr>
+<tr>
+<td>INSERT/UPDATE/DELETE の影響行数</td>
+<td><code>Int</code>（不要なら戻り値なしでもよい）</td>
+</tr>
+</tbody>
+</table>
+<p>掃除アプリでは一覧取得を <code>List&lt;Room&gt;</code> で受けている。0 件なら空リストが返る（null ではない）。</p>
+<hr />
+<h2 id="xml-vs">XML vs アノテーション</h2>
+<p>SQL の置き場所には 2 通りある。</p>
+<h3 id="_2">アノテーション方式</h3>
+<p>メソッドに直接 SQL を書く。</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@Select</span><span class="p">(</span><span class="s">&quot;SELECT id, name FROM room WHERE id = #{id}&quot;</span><span class="p">)</span>
+<span class="kd">fun</span><span class="w"> </span><span class="nf">selectById</span><span class="p">(</span><span class="nd">@Param</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">)</span><span class="w"> </span><span class="n">id</span><span class="p">:</span><span class="w"> </span><span class="n">UUID</span><span class="p">):</span><span class="w"> </span><span class="n">Room?</span>
+</code></pre></div>
+<ul>
+<li><strong>向き</strong>: 短い・固定の SQL。1 〜 2 行で済むもの。</li>
+<li><strong>不向き</strong>: SQL が長い、動的に組み立てる、<code>resultMap</code> を細かく指定したい場合。Kotlin の文字列リテラルに長い SQL を埋めると読みにくい。</li>
+</ul>
+<h3 id="xml">XML マッパー方式</h3>
+<p>SQL を <code>.xml</code> ファイルに分離する。</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;mapper</span><span class="w"> </span><span class="na">namespace=</span><span class="s">&quot;com.cleaningapp.layout.infrastructure.RoomMapper&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;insert</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;insert&quot;</span><span class="nt">&gt;</span>
+<span class="w">        </span>INSERT<span class="w"> </span>INTO<span class="w"> </span>room<span class="w"> </span>(id,<span class="w"> </span>user_id,<span class="w"> </span>name,<span class="w"> </span>type,<span class="w"> </span>grid_x,<span class="w"> </span>grid_y,<span class="w"> </span>grid_w,<span class="w"> </span>grid_h,<span class="w"> </span>created_at,<span class="w"> </span>updated_at)
+<span class="w">        </span>VALUES<span class="w"> </span>(#{id},<span class="w"> </span>#{userId},<span class="w"> </span>#{name},<span class="w"> </span>#{type},<span class="w"> </span>#{gridX},<span class="w"> </span>#{gridY},<span class="w"> </span>#{gridW},<span class="w"> </span>#{gridH},<span class="w"> </span>#{createdAt},<span class="w"> </span>#{updatedAt})
+<span class="w">    </span><span class="nt">&lt;/insert&gt;</span>
+<span class="nt">&lt;/mapper&gt;</span>
+</code></pre></div>
+<ul>
+<li><strong>向き</strong>: 長い SQL、動的 SQL（<code>&lt;if&gt;</code> 等）、複雑な <code>resultMap</code>。</li>
+<li><strong>不向き</strong>: ごく短い SQL（ファイルが増えるだけ）。</li>
+</ul>
+<h3 id="namespace">namespace とインターフェースの対応</h3>
+<p>XML の <code>namespace</code> は <strong>Mapper インターフェースの完全修飾名</strong>と一致させる。さらに各 SQL タグの <code>id</code>（<code>insert</code> / <code>selectByUserId</code>）を<strong>メソッド名</strong>と一致させることで、MyBatis がメソッドと SQL を結びつける。</p>
+<p>application.yml で XML の置き場所を指定する。</p>
+<div class="highlight"><pre><span></span><code><span class="nt">mybatis</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">mapper-locations</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">classpath:mapper/*.xml</span>
+</code></pre></div>
+<p>掃除アプリでは、可読性と将来の動的 SQL を見据えて XML 方式を採用している。</p>
+<hr />
+<h2 id="resultmap">resultMap</h2>
+<p><code>resultMap</code> は「SQL の結果カラム」を「Kotlin のオブジェクト」へどう詰めるかの対応表。</p>
+<h3 id="snake_case-camelcase">カラム名 ↔ プロパティ名のマッピング（snake_case ↔ camelCase）</h3>
+<p>DB のカラムは snake_case（<code>grid_x</code>）、Kotlin のプロパティは camelCase（<code>gridX</code>）にしたい。これを 1 件ずつ書かずに自動変換するのが <code>map-underscore-to-camel-case</code> 設定。</p>
+<div class="highlight"><pre><span></span><code><span class="nt">mybatis</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">map-underscore-to-camel-case</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<p>これで <code>grid_x</code> → <code>gridX</code>、<code>user_id</code> → <code>userId</code> のように自動でつながる。</p>
+<h3 id="valsetter-data-class">val（setter なし）の data class へマッピングする</h3>
+<p>ここが Kotlin 特有のポイント。MyBatis のデフォルトは「空コンストラクタでインスタンスを作り、setter で 1 つずつ値を入れる」方式。しかし <code>data class</code> を <strong>全プロパティ <code>val</code></strong> で定義すると <strong>setter が存在しない</strong>ため、この方式では詰められない。</p>
+<div class="highlight"><pre><span></span><code><span class="kd">data</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nc">Room</span><span class="p">(</span>
+<span class="w">    </span><span class="kd">val</span><span class="w"> </span><span class="nv">id</span><span class="p">:</span><span class="w"> </span><span class="n">UUID</span><span class="p">,</span>
+<span class="w">    </span><span class="kd">val</span><span class="w"> </span><span class="nv">userId</span><span class="p">:</span><span class="w"> </span><span class="n">UUID</span><span class="p">,</span>
+<span class="w">    </span><span class="kd">val</span><span class="w"> </span><span class="nv">name</span><span class="p">:</span><span class="w"> </span><span class="kt">String</span><span class="p">,</span>
+<span class="w">    </span><span class="kd">val</span><span class="w"> </span><span class="nv">type</span><span class="p">:</span><span class="w"> </span><span class="n">RoomType</span><span class="p">,</span>
+<span class="w">    </span><span class="kd">val</span><span class="w"> </span><span class="nv">gridX</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">,</span>
+<span class="w">    </span><span class="c1">// ... 全部 val</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>そこで <code>&lt;resultMap&gt;</code> の <code>&lt;constructor&gt;</code> を使い、<strong>コンストラクタ経由</strong>でマッピングする。</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;resultMap</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;RoomResult&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;com.cleaningapp.layout.domain.Room&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;constructor&gt;</span>
+<span class="w">        </span><span class="nt">&lt;idArg</span><span class="w"> </span><span class="na">column=</span><span class="s">&quot;id&quot;</span><span class="w"> </span><span class="na">javaType=</span><span class="s">&quot;java.util.UUID&quot;</span><span class="nt">/&gt;</span>
+<span class="w">        </span><span class="nt">&lt;arg</span><span class="w"> </span><span class="na">column=</span><span class="s">&quot;user_id&quot;</span><span class="w"> </span><span class="na">javaType=</span><span class="s">&quot;java.util.UUID&quot;</span><span class="nt">/&gt;</span>
+<span class="w">        </span><span class="nt">&lt;arg</span><span class="w"> </span><span class="na">column=</span><span class="s">&quot;name&quot;</span><span class="w"> </span><span class="na">javaType=</span><span class="s">&quot;java.lang.String&quot;</span><span class="nt">/&gt;</span>
+<span class="w">        </span><span class="nt">&lt;arg</span><span class="w"> </span><span class="na">column=</span><span class="s">&quot;type&quot;</span><span class="w"> </span><span class="na">javaType=</span><span class="s">&quot;com.cleaningapp.layout.domain.RoomType&quot;</span><span class="nt">/&gt;</span>
+<span class="w">        </span><span class="nt">&lt;arg</span><span class="w"> </span><span class="na">column=</span><span class="s">&quot;grid_x&quot;</span><span class="w"> </span><span class="na">javaType=</span><span class="s">&quot;_int&quot;</span><span class="nt">/&gt;</span>
+<span class="w">        </span><span class="nt">&lt;arg</span><span class="w"> </span><span class="na">column=</span><span class="s">&quot;grid_y&quot;</span><span class="w"> </span><span class="na">javaType=</span><span class="s">&quot;_int&quot;</span><span class="nt">/&gt;</span>
+<span class="w">        </span><span class="nt">&lt;arg</span><span class="w"> </span><span class="na">column=</span><span class="s">&quot;grid_w&quot;</span><span class="w"> </span><span class="na">javaType=</span><span class="s">&quot;_int&quot;</span><span class="nt">/&gt;</span>
+<span class="w">        </span><span class="nt">&lt;arg</span><span class="w"> </span><span class="na">column=</span><span class="s">&quot;grid_h&quot;</span><span class="w"> </span><span class="na">javaType=</span><span class="s">&quot;_int&quot;</span><span class="nt">/&gt;</span>
+<span class="w">        </span><span class="nt">&lt;arg</span><span class="w"> </span><span class="na">column=</span><span class="s">&quot;created_at&quot;</span><span class="w"> </span><span class="na">javaType=</span><span class="s">&quot;java.time.Instant&quot;</span><span class="nt">/&gt;</span>
+<span class="w">        </span><span class="nt">&lt;arg</span><span class="w"> </span><span class="na">column=</span><span class="s">&quot;updated_at&quot;</span><span class="w"> </span><span class="na">javaType=</span><span class="s">&quot;java.time.Instant&quot;</span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/constructor&gt;</span>
+<span class="nt">&lt;/resultMap&gt;</span>
+</code></pre></div>
+<p>注意点:</p>
+<ul>
+<li><code>&lt;arg&gt;</code> は<strong>コンストラクタの引数の順番どおり</strong>に並べる必要がある。プロパティ名ではなく順番で割り当たるので、<code>data class</code> の宣言順と一致させる。</li>
+<li>主キーには <code>&lt;idArg&gt;</code> を使う（キャッシュ最適化のヒントになる）。</li>
+<li><code>javaType</code> で型を明示する。プリミティブ int は <code>_int</code> のように先頭にアンダースコアを付ける。</li>
+</ul>
+<p><code>&lt;select&gt;</code> から <code>resultMap="RoomResult"</code> を指定して使う。</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;select</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;selectByUserId&quot;</span><span class="w"> </span><span class="na">resultMap=</span><span class="s">&quot;RoomResult&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span>SELECT<span class="w"> </span>id,<span class="w"> </span>user_id,<span class="w"> </span>name,<span class="w"> </span>type,<span class="w"> </span>grid_x,<span class="w"> </span>grid_y,<span class="w"> </span>grid_w,<span class="w"> </span>grid_h,<span class="w"> </span>created_at,<span class="w"> </span>updated_at
+<span class="w">    </span>FROM<span class="w"> </span>room
+<span class="w">    </span>WHERE<span class="w"> </span>user_id<span class="w"> </span>=<span class="w"> </span>#{userId}
+<span class="w">    </span>ORDER<span class="w"> </span>BY<span class="w"> </span>created_at
+<span class="nt">&lt;/select&gt;</span>
+</code></pre></div>
+<h3 id="association-collection">ネストした関連（<code>association</code> / <code>collection</code>）</h3>
+<p>1 対 1 は <code>&lt;association&gt;</code>、1 対多は <code>&lt;collection&gt;</code> で、子オブジェクトを入れ子にマッピングできる。1 対多を JOIN した 1 クエリで取ると、親が子の数だけ重複して返るため、MyBatis が <code>id</code> を手がかりに重複をまとめる。<code>&lt;idArg&gt;</code> / <code>&lt;id&gt;</code> を正しく指定しておくことが、このまとめ処理が効く前提になる。</p>
+<hr />
+<h2 id="sql">動的SQL</h2>
+<p>XML 方式では、条件に応じて SQL を組み立てるタグが使える。</p>
+<h3 id="if-where"><code>&lt;if&gt;</code> / <code>&lt;where&gt;</code></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;select</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;search&quot;</span><span class="w"> </span><span class="na">resultMap=</span><span class="s">&quot;RoomResult&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span>SELECT<span class="w"> </span>*<span class="w"> </span>FROM<span class="w"> </span>room
+<span class="w">    </span><span class="nt">&lt;where&gt;</span>
+<span class="w">        </span><span class="nt">&lt;if</span><span class="w"> </span><span class="na">test=</span><span class="s">&quot;userId != null&quot;</span><span class="nt">&gt;</span>
+<span class="w">            </span>AND<span class="w"> </span>user_id<span class="w"> </span>=<span class="w"> </span>#{userId}
+<span class="w">        </span><span class="nt">&lt;/if&gt;</span>
+<span class="w">        </span><span class="nt">&lt;if</span><span class="w"> </span><span class="na">test=</span><span class="s">&quot;type != null&quot;</span><span class="nt">&gt;</span>
+<span class="w">            </span>AND<span class="w"> </span>type<span class="w"> </span>=<span class="w"> </span>#{type}
+<span class="w">        </span><span class="nt">&lt;/if&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/where&gt;</span>
+<span class="nt">&lt;/select&gt;</span>
+</code></pre></div>
+<p><code>&lt;where&gt;</code> は、中の条件が 1 つでも成立すれば <code>WHERE</code> を付け、先頭の余分な <code>AND</code> / <code>OR</code> を自動で取り除いてくれる。条件が全部 false なら <code>WHERE</code> 自体を出さない。</p>
+<h3 id="foreach-in"><code>&lt;foreach&gt;</code> で IN 句を組み立てる</h3>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;select</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;selectByIds&quot;</span><span class="w"> </span><span class="na">resultMap=</span><span class="s">&quot;RoomResult&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span>SELECT<span class="w"> </span>*<span class="w"> </span>FROM<span class="w"> </span>room
+<span class="w">    </span>WHERE<span class="w"> </span>id<span class="w"> </span>IN
+<span class="w">    </span><span class="nt">&lt;foreach</span><span class="w"> </span><span class="na">item=</span><span class="s">&quot;id&quot;</span><span class="w"> </span><span class="na">collection=</span><span class="s">&quot;ids&quot;</span><span class="w"> </span><span class="na">open=</span><span class="s">&quot;(&quot;</span><span class="w"> </span><span class="na">separator=</span><span class="s">&quot;,&quot;</span><span class="w"> </span><span class="na">close=</span><span class="s">&quot;)&quot;</span><span class="nt">&gt;</span>
+<span class="w">        </span>#{id}
+<span class="w">    </span><span class="nt">&lt;/foreach&gt;</span>
+<span class="nt">&lt;/select&gt;</span>
+</code></pre></div>
+<p>リストの要素を区切り文字でつなぎ、<code>IN (?, ?, ?)</code> を組み立てる。</p>
+<h3 id="sql_1">アノテーション方式の動的 SQL</h3>
+<p>アノテーションでも <code>@SelectProvider</code> などで、別クラスのメソッドに SQL 文字列を生成させる方式がある。ただし可読性は XML の方が高いので、動的 SQL が必要になったら XML へ寄せるのが扱いやすい。</p>
+<hr />
+<h2 id="jpa-flyway">JPA との違い（Flyway が必須になる理由）</h2>
+<p>MyBatis は「SQL を自分で書く」ライブラリで、JPA（Hibernate）のような <strong>エンティティからのテーブル自動生成（<code>ddl-auto</code>）を持たない</strong>。つまり起動してもテーブルは勝手に作られない。</p>
+<p>そのため、スキーマは<strong>マイグレーションツールで明示的に管理</strong>する必要がある。掃除アプリでは Flyway を使い、起動時に <code>classpath:db/migration</code> の <code>V*.sql</code> を順に適用してテーブルを作っている。</p>
+<div class="highlight"><pre><span></span><code><span class="nt">spring</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">flyway</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">locations</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">classpath:db/migration</span>
+</code></pre></div>
+<p>JPA なら <code>ddl-auto: update</code> でお手軽にテーブルが増える反面、本番でスキーマがいつ変わるか読みにくい。MyBatis + Flyway は「SQL もスキーマも自分が把握している」状態を保てるのがメリット。手間と引き換えに透明性が高い。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  ページトップへ戻る
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.indexes", "navigation.expand", "navigation.top", "search.suggest"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u30b3\u30d4\u30fc\u3057\u307e\u3057\u305f", "clipboard.copy": "\u30af\u30ea\u30c3\u30d7\u30dc\u30fc\u30c9\u3078\u30b3\u30d4\u30fc", "search.result.more.one": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3082\u30461\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.more.other": "\u3053\u306e\u30da\u30fc\u30b8\u5185\u306b\u3042\u3068#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.none": "\u4f55\u3082\u898b\u3064\u304b\u308a\u307e\u305b\u3093\u3067\u3057\u305f", "search.result.one": "1\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.other": "#\u4ef6\u898b\u3064\u304b\u308a\u307e\u3057\u305f", "search.result.placeholder": "\u691c\u7d22\u30ad\u30fc\u30ef\u30fc\u30c9\u3092\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044", "search.result.term.missing": "\u691c\u7d22\u306b\u542b\u307e\u308c\u306a\u3044", "select.version": "\u30d0\u30fc\u30b8\u30e7\u30f3\u5207\u308a\u66ff\u3048"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
