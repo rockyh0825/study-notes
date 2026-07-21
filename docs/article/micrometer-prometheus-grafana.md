@@ -44,15 +44,17 @@ sequenceDiagram
     end
 ```
 
-アプリ側は「現在の値を返すエンドポイントを 1 個生やす」だけでよい。Spring Boot なら `spring-boot-starter-actuator` + `micrometer-registry-prometheus` を依存に足すと `/actuator/prometheus` が生え、こういうテキストを返すようになる。
+アプリ側は「現在の値を返すエンドポイントを 1 個生やす」だけでよい。Spring Boot なら `spring-boot-starter-actuator` + `micrometer-registry-prometheus` を依存に足し、`management.endpoints.web.exposure.include` に `prometheus` を追加すると `/actuator/prometheus` が生え、こういうテキストを返すようになる。Web 公開のデフォルトは `health` のみなので、この公開設定を忘れると 404 になる(設定の中身は後述「公開範囲は最小限に」)。
 
 ```
 # HELP http_server_requests_seconds Duration of HTTP server request handling
-# TYPE http_server_requests_seconds histogram
+# TYPE http_server_requests_seconds summary
 http_server_requests_seconds_count{method="GET",status="200",uri="/api/report"} 42
 http_server_requests_seconds_sum{method="GET",status="200",uri="/api/report"} 1.87
 jvm_memory_used_bytes{area="heap",id="G1 Old Gen"} 5.1130368E7
 ```
+
+`TYPE` がここで `summary` なのはデフォルト設定のためで、後述のパーセンタイル設定を有効にすると `histogram` に変わる。
 
 `{...}` の部分は**ラベル**で、同じメトリクス名でも `uri` や `status` ごとに別の時系列として記録される。「エンドポイント別に見る」「5xx だけ数える」ができるのはこのラベルのおかげ。
 
@@ -113,7 +115,7 @@ sum(rate(http_server_requests_seconds_count{status=~"5.."}[5m]))
 
 ### Kafka:取り込みパイプラインのパネル
 
-**⑥⑦ Kafka リスナーの処理レートと平均処理時間** — RSS 記事を消費する 2 つのリスナー(`sink-0` = PostgreSQL 保存、`live-0` = SSE 配信)の処理状況。フィード取得周期(15 分)ごとに山ができるのが正常。sink の処理時間が伸びてきたら、取り込み側(INSERT)が重くなっているサイン。
+**⑥⑦ Kafka リスナーの処理レートと平均処理時間** — RSS 記事を消費する 2 つのリスナー(`sink-0` = PostgreSQL 保存、`live-0` = SSE 配信)の処理状況。フィード取得周期(15 分)ごとに山ができるのが正常。sink の処理時間が伸びてきたら、取り込み側(INSERT)が重くなっているサイン。なお sink はバッチリスナーなので、処理レートの 1 カウントは記事 1 件ではなく 1 バッチ(ポーリング 1 回分)を意味する点に注意。
 
 ```promql
 # 平均処理時間 = 合計時間の増分 ÷ 件数の増分
